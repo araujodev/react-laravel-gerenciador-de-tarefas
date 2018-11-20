@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
+
+//Rota curinga para o react router
+Route::view('/{path?}', 'app');
