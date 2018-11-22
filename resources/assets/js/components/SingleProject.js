@@ -38,9 +38,28 @@ class SingleProject extends Component {
               title: ''
           })
 
-          this.setState
+          this.setState(prevState => ({
+            tasks: prevState.tasks.concat(response.data)
+          }))
 
       })
+      .catch(error => {
+        this.setState({
+          errors: error.response.data.errors
+        })
+      })
+    }
+
+    hasErrorFor(field){
+      return !!this.state.errors[field]
+    }
+
+    renderErrorFor(field){
+      if(this.hasErrorFor(field)){
+        return (
+          <span className="invalid"></span>
+        )
+      }
     }
 
     handleMarkProjectAsCompleted(){
