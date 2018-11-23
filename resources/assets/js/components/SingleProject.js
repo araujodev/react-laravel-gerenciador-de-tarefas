@@ -57,7 +57,9 @@ class SingleProject extends Component {
     renderErrorFor(field){
       if(this.hasErrorFor(field)){
         return (
-          <span className="invalid"></span>
+          <span className="invalid-feedback">
+            <strong> { this.state.errros[field][0] } </strong>
+          </span>
         )
       }
     }
@@ -66,6 +68,16 @@ class SingleProject extends Component {
       const { history } = this.props
       axios.put(`/api/projects/${this.state.project.id}`)
       .then(response => history.push('/'))
+    }
+
+    handleMarkTaskAsCompleted(taskId){
+      axios.put(`/api/tasks/${taskId}`).then(response => {
+        this.setState( prevState => ({
+          tasks: prevState.tasks.filter(task => {
+            return task.id !== taskId
+          })
+        }))
+      })
     }
 
     componentDidMount(){
@@ -96,6 +108,23 @@ class SingleProject extends Component {
 
                     <hr />
 
+                    <form onSubmit={this.handleAddNewTask}>
+                      <div className='input-group'>
+                        <input
+                          type='text'
+                          name='title'
+                          className={`form-control ${this.hasErrorFor('title') ? 'is-invalid' : ''}`}
+                          placeholder='Task title'
+                          value={this.state.title}
+                          onChange={this.handleFieldChange}
+                        />
+                        <div className='input-group-append'>
+                          <button className='btn btn-primary'>Add</button>
+                        </div>
+                        {this.renderErrorFor('title')}
+                      </div>
+                    </form>
+
                     <ul className='list-group mt-3'>
                       {tasks.map(task => (
                         <li
@@ -104,7 +133,7 @@ class SingleProject extends Component {
                         >
                           {task.title}
 
-                          <button className='btn btn-primary btn-sm'>
+                          <button className='btn btn-primary btn-sm' onClick={this.handleMarkTaskAsCompleted.bind(this, task.id)}>
                             Mark as completed
                           </button>
                         </li>
@@ -118,3 +147,5 @@ class SingleProject extends Component {
         )
       }
 }
+
+export default SingleProject

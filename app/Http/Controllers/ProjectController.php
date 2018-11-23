@@ -12,9 +12,8 @@ class ProjectController extends Controller
 		$projects = Project::where('is_completed', false)
 					->orderBy('created_at', 'desc')
 					->withCount([ 'tasks' => function($query){
-						$query->where('is_completed', 'false')
-					}])
-					->get();
+						$query->where('is_completed', 'false');
+					}])->get();
 
 		return $projects->toJson();
 	}

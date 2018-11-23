@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 
-class NewProject extends Comment {
+class NewProject extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -26,7 +26,7 @@ class NewProject extends Comment {
 
         const project = {
             name: this.state.name,
-            description = this.state.description
+            description: this.state.description
         }
 
         axios.post('/api/projects', project).then( reponse => {
@@ -97,4 +97,4 @@ class NewProject extends Comment {
       }
 }
 
-export default NewProject
+export default NewProject;
